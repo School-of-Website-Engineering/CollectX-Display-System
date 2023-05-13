@@ -1,4 +1,4 @@
-# future-front-end
+# CollectX-Display-System
 
 <!-- ![](https://img.shields.io/badge/%E7%8A%B6%E6%80%81-%E7%BB%B4%E6%8A%A4%E4%B8%AD-brightgreen) -->
 <!--![](https://img.shields.io/badge/%E7%8A%B6%E6%80%81-%E5%B0%B1%E7%BB%AA-orange)-->
@@ -8,23 +8,24 @@
 [![](https://img.shields.io/crates/l/s)](https://img.shields.io/crates/l/s)
 ![](https://img.shields.io/badge/Vue-%5E3.2.47-success)
 ![](https://img.shields.io/badge/Node-%20%5E16.18.0-brightgreen)
-![](https://img.shields.io/badge/Vite-%20%5E4.1.4-brightgreen)
+![](https://img.shields.io/badge/Vite-%20%5E4.3.3-brightgreen)
 ![](https://img.shields.io/badge/npm-%5E9.5.1-orange)
 
 ---
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/957f0479-bb9e-498b-bc9d-2ba1b513dd54/deploy-status)](https://app.netlify.com/sites/cheery-unicorn-b76380/deploys)
-[![DeepSource](https://deepsource.io/gh/School-of-Website-Engineering/future-front-end.svg/?label=active+issues&show_trend=true&token=y_ZjbP8TmVGwwkuKPdl67NZO)](https://deepsource.io/gh/School-of-Website-Engineering/future-front-end/?ref=repository-badge)
+[![DeepSource](https://app.deepsource.com/gh/School-of-Website-Engineering/CollectX-Display-System.svg/?label=active+issues&show_trend=true&token=-RcVNtQMdEHAI92GleuRDqvD)](https://app.deepsource.com/gh/School-of-Website-Engineering/CollectX-Display-System/?ref=repository-badge)
 
 ---
 
 ## 项目简介
 
-future-front-end 是一个基于 Vue3 + Vite + TypeScript 的前端类似 discord 交友聊天项目，使用了 Vue Router、Vuex、Element Plus 等主流框架和库，项目采用了模块化、组件化、工程化的开发模式。
+CollectX-Display-System是一个基于Vue3.0的前端项目，用于展示用户问卷的数据。
+
 
  <h2>内容列表</h2>
 
-- [future-front-end](#future-front-end)
+- [CollectX-Display-System](#collectx-display-system)
   - [项目简介](#项目简介)
   - [Git 规范](#git-规范)
     - [Git 分支命名](#git-分支命名)
@@ -90,7 +91,7 @@ future-front-end 是一个基于 Vue3 + Vite + TypeScript 的前端类似 discor
 
 ## 如何贡献
 
-非常欢迎你的加入！[提一个 Issue](https://github.com/mason369/future/issues) 或者提交一个
+非常欢迎你的加入！[提一个 Issue](https://github.com/School-of-Website-Engineering/CollectX-Display-System/issues) 或者提交一个
 Pull Request。
 
 Progressive-Tune 遵循 [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) 行为规范。
@@ -98,37 +99,6 @@ Progressive-Tune 遵循 [Contributor Covenant](http://contributor-covenant.org/v
 ### 贡献者
 
 <!-- readme: collaborators,contributors -start -->
-<table>
-<tr>
-    <td align="center">
-        <a href="https://github.com/moybejct">
-            <img src="https://avatars.githubusercontent.com/u/130419166?v=4" width="100;" alt="moybejct"/>
-            <br />
-            <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/mason369">
-            <img src="https://avatars.githubusercontent.com/u/93964390?v=4" width="100;" alt="mason369"/>
-            <br />
-            <sub><b>Mason</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/LingASDJ">
-            <img src="https://avatars.githubusercontent.com/u/70191651?v=4" width="100;" alt="LingASDJ"/>
-            <br />
-            <sub><b>JDSA Ling</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/liusxs">
-            <img src="https://avatars.githubusercontent.com/u/101164913?v=4" width="100;" alt="liusxs"/>
-            <br />
-            <sub><b>Liuliu66</b></sub>
-        </a>
-    </td></tr>
-</table>
 <!-- readme: collaborators,contributors -end -->
 
 **_感谢以上参与项目的人_**
