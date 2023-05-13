@@ -101,31 +101,10 @@ Progressive-Tune 遵循 [Contributor Covenant](http://contributor-covenant.org/v
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/moybejct">
-            <img src="https://avatars.githubusercontent.com/u/130419166?v=4" width="100;" alt="moybejct"/>
-            <br />
-            <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/mason369">
             <img src="https://avatars.githubusercontent.com/u/93964390?v=4" width="100;" alt="mason369"/>
             <br />
             <sub><b>Mason</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/LingASDJ">
-            <img src="https://avatars.githubusercontent.com/u/70191651?v=4" width="100;" alt="LingASDJ"/>
-            <br />
-            <sub><b>JDSA Ling</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/liusxs">
-            <img src="https://avatars.githubusercontent.com/u/101164913?v=4" width="100;" alt="liusxs"/>
-            <br />
-            <sub><b>Liuliu66</b></sub>
         </a>
     </td></tr>
 </table>
