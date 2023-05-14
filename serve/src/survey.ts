@@ -3,6 +3,16 @@ import { v4 as uuidv4 } from 'uuid';
 import Store from './store';
 import { Response } from './types';
 
+/**
+ * 问卷调查数据结构
+ * @interface SurveyData
+ * @property {string} id 问卷调查数据 id
+ * @property {string} name 姓名
+ * @property {number} age 年龄
+ * @property {number} gender 性别
+ * @property {string} surveyResult 问卷调查结果
+ * @property {number} createdAt 创建时间
+ */
 interface SurveyData {
     id: string;
     name: string;
@@ -23,7 +33,11 @@ class Survey {
         this.store = new Store(path.resolve(__dirname, 'data/survey.json')); // 创建数据存储对象
     }
 
-    // 保存问卷调查数据
+    /**
+     * 保存问卷调查数据
+     * @param data 问卷调查数据
+     * @returns 保存成功的问卷调查数据
+     */
     async save(data: Omit<SurveyData, 'id' | 'createdAt'>): Promise<Response<SurveyData>> {
         const newData: SurveyData = { ...data, id: uuidv4(), createdAt: Date.now() }; // 生成新数据并保存
         await this.store.save(newData);
@@ -35,7 +49,12 @@ class Survey {
         };
     }
 
-    // 查询所有问卷调查数据
+    /**
+     * 查询所有问卷调查数据
+     * @returns 问卷调查数据列表
+     * @example await survey.list();
+     * @example const { data } = await survey.list();
+     */
     async list(): Promise<Response<SurveyData[]>> {
         const data = await this.store.read(); // 从数据存储对象中读取数据
         console.log(`查询到 ${data.length} 条问卷调查数据`); // 控制台输出提示信息
@@ -46,7 +65,12 @@ class Survey {
         };
     }
 
-    // 根据 ID 查询问卷调查数据
+    /**
+     * 根据 id 查询问卷调查数据
+     * @param id 问卷调查数据 id
+     * @returns 问卷调查数据
+     * @example await survey.findById('xxx');
+     */
     async findById(id: string): Promise<Response<SurveyData | undefined>> {
         const data = await this.store.read();
         const result = data.find((item) => item.id === id);
@@ -68,4 +92,5 @@ class Survey {
     }
 }
 
-export { Survey as default, Response };
+export default new Survey();
+export { Response };

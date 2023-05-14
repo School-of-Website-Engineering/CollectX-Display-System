@@ -1,19 +1,18 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import Survey from './survey';
+import survey from './survey';
 import { Response as Res } from './survey';
 
+// 创建 express 应用
 const app = express();
+// 解析请求体
 app.use(bodyParser.json());
 
-const survey = new Survey(); // 创建问卷调查对象
-
-// 提交问卷调查数据的接口
 /**
  * @api {post} /survey 提交问卷调查数据
  * @apiName PostSurvey
  * @apiGroup Survey 问卷调查
- * @apiVersion 0.1.0
+ * @apiVersion 0.1.1
  */
 app.post('/survey', async(req: Request, res: Response<Res>) => {
     const { name, age, gender, surveyResult } = req.body;
@@ -23,7 +22,7 @@ app.post('/survey', async(req: Request, res: Response<Res>) => {
         return res.status(400).json({ code: 400, message: '缺少参数', data: null });
     }
     const data = await survey.save({ name, age, gender, surveyResult }); // 保存数据
-    console.log(`提交问卷调查数据成功，数据为 ${JSON.stringify(data)}`); // 控制台输出提示信息
+    console.log(`提交问卷调查数据成功，数据为 ${JSON.stringify(data, null, 4)}`); // 控制台输出提示信息
     res.json(data);
 });
 

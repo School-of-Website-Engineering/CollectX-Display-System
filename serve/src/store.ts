@@ -25,7 +25,8 @@ class Store {
         const fileData = await this.readFromFile();
         // 将新数据合并入已有数据，并写入文件
         const newData = [...fileData, data];
-        await fs.writeFile(this.filePath, JSON.stringify(newData));
+        // 格式化数据并写入文件
+        await fs.writeFile(this.filePath, JSON.stringify(newData, null, 4));
         console.log(`已将数据保存至 ${this.filePath} 文件中`); // 控制台输出提示信息
         return newData;
     }
