@@ -60,7 +60,7 @@ app.get('/survey/question/:id', async(req: Request, res: Response<Res>) => {
  *    "你喜欢的动物是什么？",
  *    "你喜欢的颜色是什么？"
  *    ]
- *    }
+ * }
  */
 app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
     const { questions } = req.body;
