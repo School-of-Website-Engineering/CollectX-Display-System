@@ -13,7 +13,7 @@ app.use(bodyParser.json());
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.1.1
  */
-app.post('/survey', async(req: Request, res: Response<Res>) => {
+app.post('/survey', async (req: Request, res: Response<Res>) => {
     const { name, age, gender, surveyResult } = req.body;
     if (!name || !age || !gender || !surveyResult) {
         // 如果请求参数不完整，则返回错误信息
@@ -31,7 +31,7 @@ app.post('/survey', async(req: Request, res: Response<Res>) => {
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.1.0
  */
-app.get('/survey', async(_req: Request, res: Response<Res>) => {
+app.get('/survey', async (_req: Request, res: Response<Res>) => {
     const data = await survey.list(); // 查询数据
     console.log(`查询到 ${data.data.length} 条问卷调查数据`); // 控制台输出提示信息
     res.json(data);
@@ -43,7 +43,7 @@ app.get('/survey', async(_req: Request, res: Response<Res>) => {
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.1.0
  */
-app.get('/survey/question/:id', async(req: Request, res: Response<Res>) => {
+app.get('/survey/question/:id', async (req: Request, res: Response<Res>) => {
     const data = await survey.findById(req.params.id); // 根据 ID 查询数据
     console.log(`查询问卷调查数据，id 为 ${req.params.id}`); // 控制台输出提示信息
     res.status(data.code).json(data);
@@ -62,7 +62,7 @@ app.get('/survey/question/:id', async(req: Request, res: Response<Res>) => {
  *    ]
  *    }
  */
-app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
+app.post('/survey/questions', async (req: Request, res: Response<Res>) => {
     const { questions } = req.body;
     const result = await survey.setQuestions(questions);
     res.json(result);
@@ -74,7 +74,7 @@ app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.2.0
  */
-app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) => {
+app.get('/survey/questions', async (req: Request, res: Response<Res<string[]>>) => {
     const result = await survey.getQuestions();
     res.json(result);
 });
@@ -85,7 +85,7 @@ app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) =
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.2.0
  */
-app.put('/survey/questions', async(req: Request, res: Response<Res<string>>) => {
+app.put('/survey/questions', async (req: Request, res: Response<Res<string>>) => {
     const { questions } = req.body;
     const result = await survey.updateQuestions(questions);
     res.json(result);
@@ -97,7 +97,7 @@ app.put('/survey/questions', async(req: Request, res: Response<Res<string>>) => 
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.3.0
  */
-app.post('/survey/authorization', async(req: Request, res: Response<Res<string>>) => {
+app.post('/survey/authorization', async (req: Request, res: Response<Res<string>>) => {
     const { userId, role } = req.body;
     const result = await survey.authorization.setRole(userId, role);
     res.json(result);
@@ -109,7 +109,7 @@ app.post('/survey/authorization', async(req: Request, res: Response<Res<string>>
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.3.0
  */
-app.get('/survey/authorization/:userId', async(req: Request, res: Response<Res<string>>) => {
+app.get('/survey/authorization/:userId', async (req: Request, res: Response<Res<string>>) => {
     const { userId } = req.params;
     const result = await survey.authorization.getRole(userId);
     res.json(result);
@@ -121,7 +121,7 @@ app.get('/survey/authorization/:userId', async(req: Request, res: Response<Res<s
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.3.0
  */
-app.get('/survey/data/:surveyId', async(req: Request, res: Response<Res<any[]>>) => {
+app.get('/survey/data/:surveyId', async (req: Request, res: Response<Res<any[]>>) => {
     const { surveyId } = req.params;
     const result = await survey.querySurveyData(surveyId);
     res.json(result);
