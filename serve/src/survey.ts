@@ -2,6 +2,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import Store from './store';
 import { Response } from './types';
+import fs from 'fs/promises';
 
 /**
  * 问卷调查数据结构
@@ -27,10 +28,12 @@ interface SurveyData {
  * 问卷调查相关的数据操作
  */
 class Survey {
-    store: Store;
+    store: Store; // Store 类的实例
+    authorization: Authorization; // Authorization 类的实例
 
     constructor() {
         this.store = new Store(path.resolve(__dirname, 'data/survey.json')); // 创建数据存储对象
+        this.authorization = authorization; // 创建授权对象
     }
 
     /**
@@ -90,7 +93,123 @@ class Survey {
             };
         }
     }
+
+    /**
+     * 设置调查问卷问题
+     * @param questions 调查问卷问题
+     * @returns 返回成功信息
+     */
+    async setQuestions(questions: any[]): Promise<Response> {
+        if (!questions || !Array.isArray(questions)) {
+            return {
+                code   : 400,
+                message: '参数错误',
+                data   : '请提供正确的问题列表'
+            };
+        }
+        const questionFilePath = path.resolve(__dirname, 'data/question.json');
+        await fs.writeFile(questionFilePath, JSON.stringify(questions, null, 4));
+        console.log(`已将数据保存至 ${questionFilePath} 文件中`);
+        return {
+            code   : 0,
+            message: '设置成功',
+            data   : '问题列表已更新！'
+        };
+    }
+
+    /**
+     * 查询调查问卷问题列表
+     * @returns 返回问题列表
+     */
+    async getQuestions(): Promise<Response<string[]>> {
+        const questions = await this.store.readQuestions();
+        console.log(`查询到 ${questions.length} 条问题`);
+        return {
+            code   : 0,
+            message: '查询成功',
+            data   : questions
+        };
+    }
+
+    /**
+     * 更新调查问卷问题列表
+     * @param questions 问题列表
+     * @returns 返回更新成功信息
+     */
+    async updateQuestions(questions: string[]): Promise<Response<string>> {
+        return await this.store.saveQuestions(questions);
+    }
+
+    /**
+     * 查询调查问卷数据列表
+     * @param surveyId 调查问卷id
+     * @returns 返回数据列表
+     */
+    async querySurveyData(surveyId: string): Promise<Response<any[]>> {
+        const data = await this.store.querySurveyData(surveyId);
+        return {
+            code   : 0,
+            message: '查询成功',
+            data
+        };
+    }
 }
 
-export default new Survey();
+/**
+ * 权限控制类
+ * 用于区分用户角色
+ */
+class Authorization {
+    authorizationMap: { [key: string]: string };
+
+    constructor() {
+        this.authorizationMap = {};
+    }
+
+    /**
+     * 设置用户角色
+     * @param userId 用户id
+     * @param role 用户角色
+     * @returns 返回成功信息
+     */
+    async setRole(userId: string, role: string): Promise<Response<string>> {
+        if (!userId || !role) {
+            return {
+                code   : 400,
+                message: '缺少参数',
+                data   : '请提供正确的用户id和角色'
+            };
+        }
+        this.authorizationMap[userId] = role;
+        return {
+            code   : 0,
+            message: '设置成功',
+            data   : '用户角色已更新！'
+        };
+    }
+
+    /**
+     * 查询用户角色
+     * @param userId 用户id
+     * @returns 返回角色信息
+     */
+    async getRole(userId: string): Promise<Response<string>> {
+        if (!userId) {
+            return {
+                code   : 400,
+                message: '缺少参数',
+                data   : '请提供正确的用户id'
+            };
+        }
+        const role = this.authorizationMap[userId] ?? '';
+        return {
+            code   : 0,
+            message: '查询成功',
+            data   : role
+        };
+    }
+}
+
+export const survey = new Survey();
+export const authorization = new Authorization();
 export { Response };
