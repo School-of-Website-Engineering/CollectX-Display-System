@@ -1,0 +1,1 @@
+import{_ as s}from"./index-84fcde6e.js";import{o as a,k as d}from"./vendor-0683d397.js";const f=s({},[["render",function(s,f){return a(),d("div",null,"asdfasdfasdfasdfasdfasdfasdfasdfasdfas")}]]);export{f as default};
