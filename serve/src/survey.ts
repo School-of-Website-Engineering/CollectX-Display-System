@@ -97,9 +97,11 @@ class Survey {
     /**
      * 设置调查问卷问题
      * @param questions 调查问卷问题
+     * @param surveyName
      * @returns 返回成功信息
+     * @example await survey.setQuestions(['问题1', '问题2'], 'survey1');
      */
-    async setQuestions(questions: any[]): Promise<Response> {
+    async setQuestions(questions: any[], surveyName: string): Promise<Response> {
         if (!questions || !Array.isArray(questions)) {
             return {
                 code   : 400,
@@ -107,9 +109,7 @@ class Survey {
                 data   : '请提供正确的问题列表'
             };
         }
-        const questionFilePath = path.resolve(__dirname, 'data/question.json');
-        await fs.writeFile(questionFilePath, JSON.stringify(questions, null, 4));
-        console.log(`已将数据保存至 ${questionFilePath} 文件中`);
+        await this.store.saveQuestions(questions, surveyName);
         return {
             code   : 0,
             message: '设置成功',
@@ -134,10 +134,11 @@ class Survey {
     /**
      * 更新调查问卷问题列表
      * @param questions 问题列表
+     * @param surveyName
      * @returns 返回更新成功信息
      */
-    async updateQuestions(questions: string[]): Promise<Response<string>> {
-        return await this.store.saveQuestions(questions);
+    async updateQuestions(questions: string[], surveyName: string): Promise<Response> {
+        return await this.store.saveQuestions(questions, surveyName);
     }
 
     /**

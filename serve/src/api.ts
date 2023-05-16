@@ -56,15 +56,16 @@ app.get('/survey/question/:id', async(req: Request, res: Response<Res>) => {
  * @apiVersion 0.2.0
  * @example {
  *    "questions": [
- *    "你喜欢的水果是什么？",
- *    "你喜欢的动物是什么？",
- *    "你喜欢的颜色是什么？"
- *    ]
+ *    "你喜欢吃苹果吗？",
+ *    "你喜欢吃香蕉吗？",
+ *    "你喜欢吃橘子吗？"
+ *    ],
+ *    "surveyName": "水果调查问卷"
  * }
  */
 app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
-    const { questions } = req.body;
-    const result = await survey.setQuestions(questions);
+    const { questions, surveyName } = req.body;
+    const result = await survey.setQuestions(questions, surveyName);
     res.json(result);
 });
 
@@ -86,8 +87,8 @@ app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) =
  * @apiVersion 0.2.0
  */
 app.put('/survey/questions', async(req: Request, res: Response<Res<string>>) => {
-    const { questions } = req.body;
-    const result = await survey.updateQuestions(questions);
+    const { questions, surveyName } = req.body;
+    const result = await survey.updateQuestions(questions, surveyName);
     res.json(result);
 });
 

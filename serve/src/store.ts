@@ -94,12 +94,14 @@ class Store {
     /**
      * 保存问题列表到文件中
      * @param questions 问题列表
+     * @param surveyName
      * @returns 返回保存成功信息
+     * @example await store.saveQuestions(['你喜欢吃苹果吗？', '你喜欢吃香蕉吗？'], 'fruit');
      */
-    public async saveQuestions(questions: string[]): Promise<Response<string>> {
-        const questionFilePath = path.resolve(__dirname, 'data/question.json');
-        await fs.writeFile(questionFilePath, JSON.stringify(questions));
-        console.log(`已将数据保存至 ${questionFilePath} 文件中`); // 控制台输出提示信息
+    public async saveQuestions(questions: string[], surveyName: string): Promise<Response> {
+        const questionFilePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
+        await fs.writeFile(questionFilePath, JSON.stringify(questions, null, 4));
+        console.log(`已将${surveyName}的问题列表保存至 ${questionFilePath} 文件中`); // 控制台输出提示信息
         return {
             code   : 0,
             message: '设置成功',
