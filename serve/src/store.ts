@@ -129,12 +129,12 @@ class Store {
 
     /**
      * 查询指定调查问卷的所有数据
-     * @param surveyId 调查问卷id
+     * @param surveyName 调查问卷id
      * @returns 返回查询到的数据列表
      */
-    public async querySurveyData(surveyId: string): Promise<any[]> {
+    public async querySurveyData(surveyName: string): Promise<any[]> {
         const files = await this.listFiles();
-        const regex = new RegExp(`^${surveyId}_data_`);
+        const regex = new RegExp(`^${surveyName}_data_`);
         const dataFiles = files.filter((file) => regex.test(file));
         return Promise.all(
             dataFiles.map(async(file) => {

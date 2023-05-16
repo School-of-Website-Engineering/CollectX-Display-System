@@ -142,11 +142,19 @@ class Survey {
 
     /**
      * 查询调查问卷数据列表
-     * @param surveyId 调查问卷id
+     * @param surveyName 调查问卷名称
      * @returns 返回数据列表
      */
-    async querySurveyData(surveyId: string): Promise<Response<any[]>> {
-        const data = await this.store.querySurveyData(surveyId);
+    async querySurveyData(surveyName: string): Promise<Response<any[]>> {
+        const data = await this.store.querySurveyData(surveyName);
+        console.log(`查询${surveyName}调查问卷数据，共${data.length}条`);
+        if (data.length === 0) {
+            return {
+                code   : 404,
+                message: '数据不存在',
+                data   : []
+            };
+        }
         return {
             code   : 0,
             message: '查询成功',
