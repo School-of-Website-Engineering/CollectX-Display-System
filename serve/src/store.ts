@@ -101,9 +101,9 @@ class Store {
         await fs.writeFile(questionFilePath, JSON.stringify(questions));
         console.log(`已将数据保存至 ${questionFilePath} 文件中`); // 控制台输出提示信息
         return {
-            code   : 0,
+            code: 0,
             message: '设置成功',
-            data   : '问题列表已更新！'
+            data: '问题列表已更新！',
         };
     }
 
@@ -137,10 +137,10 @@ class Store {
         const regex = new RegExp(`^${surveyName}_data_`);
         const dataFiles = files.filter((file) => regex.test(file));
         return Promise.all(
-            dataFiles.map(async(file) => {
+            dataFiles.map(async (file) => {
                 const data = await this.findByFileName(file);
                 return { ...data, id: file };
-            })
+            }),
         );
     }
 }
