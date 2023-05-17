@@ -104,9 +104,9 @@ class Store {
     public async saveQuestions(questions: string[], surveyName: string): Promise<Response> {
         // 设置创建时间与id
         const newQuestion = {
-            id        : uuidv4(),
+            id: uuidv4(),
             createTime: new Date().toISOString(),
-            questions
+            questions,
         };
         const filePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
         await fs.writeFile(filePath, JSON.stringify(newQuestion, null, 4));
@@ -116,9 +116,9 @@ class Store {
         // await fs.writeFile(newQuestion, JSON.stringify(questions, null, 4));
         // console.log(`已将${surveyName}的问题列表保存至 ${newQuestion} 文件中`); // 控制台输出提示信息
         return {
-            code   : 0,
+            code: 0,
             message: '设置成功',
-            data   : '问题列表已更新！'
+            data: '问题列表已更新！',
         };
     }
 
@@ -152,10 +152,10 @@ class Store {
         const regex = new RegExp(`^${surveyName}_data_`);
         const dataFiles = files.filter((file) => regex.test(file));
         return Promise.all(
-            dataFiles.map(async(file) => {
+            dataFiles.map(async (file) => {
                 const data = await this.findByFileName(file);
                 return { ...data, id: file };
-            })
+            }),
         );
     }
 }
