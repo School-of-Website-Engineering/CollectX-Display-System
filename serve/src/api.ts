@@ -50,13 +50,14 @@ app.get('/survey/question/:id', async(req: Request, res: Response<Res>) => {
 });
 
 /**
- * @api {get} /survey/questions 获取调查问卷问题列表
+ * @api {get} /survey/questions 获取该用户的所有问卷调查问题
  * @apiName GetQuestions
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.2.0
  */
 app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) => {
-    const result = await survey.getQuestions();
+    const { userName } = req.query;
+    const result = await survey.getQuestions(userName as string);
     res.json(result);
 });
 

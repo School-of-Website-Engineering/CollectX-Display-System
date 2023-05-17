@@ -65,7 +65,7 @@ class Store {
         try {
             const data = await fs.readFile(this.filePath);
             return JSON.parse(data.toString());
-        } catch (e: any) {
+        } catch (e) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回空数组
                 console.log(`文件 ${this.filePath} 不存在`);
@@ -76,18 +76,32 @@ class Store {
     }
 
     /**
-     * 从文件中读取问题列表
+     * 读取该用户名文件夹下的问题json文件名并返回数组
+     * @param userName 用户名
+     * @returns 返回读取到的问题文件名列表
+     * @example await store.readQuestionFileNames('张三');
+     */
+    private async readQuestionFileNames(userName: string): Promise<string[]> {
+        const questionPath = path.resolve(__dirname, 'data', userName);
+        return await fs.readdir(questionPath);
+    }
+
+    /**
+     * 从用户名文件夹中读取问题名称
+     * @param userName 用户名
      * @returns 返回读取到的问题列表
      */
-    public async readQuestions(): Promise<string[]> {
-        const questionFilePath = path.resolve(__dirname, 'data/question.json');
+    public async readQuestions(userName: string): Promise<any[]> {
         try {
-            const data = await fs.readFile(questionFilePath);
-            return JSON.parse(data.toString());
-        } catch (e: any) {
+            const data = await this.readQuestionFileNames(userName);
+            //返回问题名称列表
+            return data.map((item) => {
+                return item.split('_')[0];
+            });
+        } catch (e) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回空数组
-                console.log(`文件 ${questionFilePath} 不存在`);
+                console.log(`该用户 ${userName} 未创建问题列表`);
                 return [];
             }
             throw e;
@@ -104,7 +118,7 @@ class Store {
             const data = await fs.readFile(fileName);
             console.log(`从 ${fileName} 文件中读取到数据`);
             return JSON.parse(data.toString());
-        } catch (e: any) {
+        } catch (e) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回undefined
                 console.log(`文件 ${fileName} 不存在`);

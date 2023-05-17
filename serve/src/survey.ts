@@ -97,11 +97,19 @@ class Survey {
 
     /**
      * 查询调查问卷问题列表
+     * @param userName 用户名
      * @returns 返回问题列表
      */
-    async getQuestions(): Promise<Response<string[]>> {
-        const questions = await this.store.readQuestions();
+    async getQuestions(userName: string): Promise<Response<any[]>> {
+        const questions = await this.store.readQuestions(userName);
         console.log(`查询到 ${questions.length} 条问题`);
+        if (questions.length === 0) {
+            return {
+                code   : 404,
+                message: '无法获取问题列表，请检查用户名是否正确，或者是否已经设置调查问卷问题',
+                data   : []
+            };
+        }
         return {
             code   : 0,
             message: '查询成功',
