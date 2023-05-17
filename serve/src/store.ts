@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
  */
 class Store {
     filePath: string;
+
     /**
      * 构造函数
      * @param filePath 文件路径
@@ -96,18 +97,17 @@ class Store {
     /**
      * 根据文件名查询数据
      * @param fileName 文件名
-     * @param userName 用户名
      * @returns 返回查询到的数据
      */
-    public async findByFileName(userName: string, fileName: string): Promise<any> {
-        const filePath = path.resolve(__dirname, `data/${userName}/${fileName}_question.json`);
+    public async findByFileName(fileName: string): Promise<any> {
         try {
-            const data = await fs.readFile(filePath);
+            const data = await fs.readFile(fileName);
+            console.log(`从 ${fileName} 文件中读取到数据`);
             return JSON.parse(data.toString());
         } catch (e: any) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回undefined
-                console.log(`文件 ${filePath} 不存在`);
+                console.log(`文件 ${fileName} 不存在`);
                 return undefined;
             }
             throw e;
@@ -121,22 +121,10 @@ class Store {
      * @returns 返回查询到的数据列表
      */
     public async querySurveyData(surveyName: string, userName: string): Promise<any[]> {
-        // 根据用户名查询该用户创建的调查问卷
-        const userDir = path.resolve(__dirname, `data/${userName}`);
         // 根据调查问卷名称查询该调查问卷的所有数据，由于系统创建的名称为‘水果调查问卷_question.json’，所以需要添加后缀
-        const filePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
+        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}_question.json`);
         // 调用findByFileName方法查询数据
-        return await this.findByFileName(userName, filePath);
-
-        // const files = await this.listFiles();
-        // const regex = new RegExp(`^${surveyName}_data_`);
-        // const dataFiles = files.filter((file) => regex.test(file));
-        // return Promise.all(
-        //     dataFiles.map(async(file) => {
-        //         const data = await this.findByFileName(file);
-        //         return { ...data, id: file };
-        //     })
-        // );
+        return await this.findByFileName(filePath);
     }
 
     /**

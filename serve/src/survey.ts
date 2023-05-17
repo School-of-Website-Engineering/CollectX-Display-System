@@ -116,15 +116,15 @@ class Survey {
      * @returns 返回数据列表
      */
     async querySurveyData(surveyName: string, userName: string): Promise<Response<any[]>> {
-        const data = await this.store.querySurveyData(surveyName, userName);
-        if (!data || !data.length) {
+        const data = (await this.store.querySurveyData(surveyName, userName)) as any;
+        if (!data) {
             return {
                 code   : 404,
                 message: '数据不存在,请检查调查问卷名称',
                 data   : []
             };
         }
-        console.log(`查询${surveyName}调查问卷数据，共${data.length}条`);
+        console.log(`查询${surveyName}调查问卷数据，共${data.questions.length}条`);
         return {
             code   : 0,
             message: '查询成功',
