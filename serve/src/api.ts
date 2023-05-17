@@ -50,26 +50,6 @@ app.get('/survey/question/:id', async(req: Request, res: Response<Res>) => {
 });
 
 /**
- * @api {post} /survey/questions 设置调查问卷问题
- * @apiName SetQuestions
- * @apiGroup Survey 问卷调查
- * @apiVersion 0.2.0
- * @example {
- *    "questions": [
- *    "你喜欢吃苹果吗？",
- *    "你喜欢吃香蕉吗？",
- *    "你喜欢吃橘子吗？"
- *    ],
- *    "surveyName": "水果调查问卷"
- * }
- */
-app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
-    const { questions, surveyName } = req.body;
-    const result = await survey.setQuestions(questions, surveyName);
-    res.json(result);
-});
-
-/**
  * @api {get} /survey/questions 获取调查问卷问题列表
  * @apiName GetQuestions
  * @apiGroup Survey 问卷调查
@@ -77,30 +57,6 @@ app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
  */
 app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) => {
     const result = await survey.getQuestions();
-    res.json(result);
-});
-
-/**
- * @api {post} /survey/authorization 设置用户角色
- * @apiName SetAuthorization
- * @apiGroup Survey 问卷调查
- * @apiVersion 0.3.0
- */
-app.post('/survey/authorization', async(req: Request, res: Response<Res<string>>) => {
-    const { userId, role } = req.body;
-    const result = await survey.authorization.setRole(userId, role);
-    res.json(result);
-});
-
-/**
- * @api {get} /survey/authorization 获取用户角色
- * @apiName GetAuthorization
- * @apiGroup Survey 问卷调查
- * @apiVersion 0.3.0
- */
-app.get('/survey/authorization/:userId', async(req: Request, res: Response<Res<string>>) => {
-    const { userId } = req.params;
-    const result = await survey.authorization.getRole(userId);
     res.json(result);
 });
 
@@ -119,4 +75,33 @@ app.get('/survey/data', async(req: Request, res: Response<Res<any[]>>) => {
     res.json(result);
 });
 
+/**
+ * @api {post} /survey/questions 设置调查问卷问题
+ * @apiName SetQuestions
+ * @apiGroup Survey 问卷调查
+ * @apiVersion 0.2.0
+ * @example {
+ *    "questions": [
+ *    "你喜欢吃苹果吗？",
+ *    "你喜欢吃香蕉吗？",
+ *    "你喜欢吃橘子吗？"
+ *    ],
+ *    "surveyName": "水果调查问卷",
+ *    "userName": "张三"
+ * }
+ */
+app.post('/survey/questions', async(req: Request, res: Response<Res>) => {
+    const { questions, surveyName, userName } = req.body;
+    const result = await survey.setQuestions(questions, surveyName, userName);
+    res.json(result);
+});
+
+/**
+ * @api {post} /survey/answer 提交问卷调查答案
+ */
+// app.post('/survey/answer', async(req: Request, res: Response<Res>) => {
+//     const { userId, answers } = req.body;
+//     const result = await survey.submitAnswers(userId, answers);
+//     res.json(result);
+// });
 export default app;

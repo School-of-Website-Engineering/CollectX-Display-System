@@ -2,7 +2,6 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import Store from './store';
 import { Response } from './types';
-import fs from 'fs/promises';
 
 /**
  * 问卷调查数据结构
@@ -29,11 +28,9 @@ interface SurveyData {
  */
 class Survey {
     store: Store; // Store 类的实例
-    authorization: Authorization; // Authorization 类的实例
 
     constructor() {
         this.store = new Store(path.resolve(__dirname, 'data/survey.json')); // 创建数据存储对象
-        this.authorization = authorization; // 创建授权对象
     }
 
     /**
@@ -99,29 +96,6 @@ class Survey {
     }
 
     /**
-     * 设置调查问卷问题
-     * @param questions 调查问卷问题
-     * @param surveyName
-     * @returns 返回成功信息
-     * @example await survey.setQuestions(['问题1', '问题2'], 'survey1');
-     */
-    async setQuestions(questions: any[], surveyName: string): Promise<Response> {
-        if (!questions || !Array.isArray(questions)) {
-            return {
-                code   : 400,
-                message: '参数错误',
-                data   : '请提供正确的问题列表'
-            };
-        }
-        await this.store.saveQuestions(questions, surveyName);
-        return {
-            code   : 0,
-            message: '设置成功',
-            data   : '问题列表已更新！'
-        };
-    }
-
-    /**
      * 查询调查问卷问题列表
      * @returns 返回问题列表
      */
@@ -156,63 +130,52 @@ class Survey {
             data
         };
     }
-}
-
-/**
- * 权限控制类
- * 用于区分用户角色
- */
-class Authorization {
-    authorizationMap: { [key: string]: string };
-
-    constructor() {
-        this.authorizationMap = {};
-    }
 
     /**
-     * 设置用户角色
-     * @param userId 用户id
-     * @param role 用户角色
+     * 设置调查问卷问题
+     * @param questions 调查问卷问题
+     * @param surveyName 调查问卷名称
+     * @param userName 用户名
      * @returns 返回成功信息
+     * @example await survey.setQuestions(['问题1', '问题2'], 'survey1');
      */
-    async setRole(userId: string, role: string): Promise<Response<string>> {
-        if (!userId || !role) {
+    async setQuestions(questions: any[], surveyName: string, userName: string): Promise<Response> {
+        if (!questions || !Array.isArray(questions)) {
             return {
                 code   : 400,
-                message: '缺少参数',
-                data   : '请提供正确的用户id和角色'
+                message: '参数错误',
+                data   : null
             };
         }
-        this.authorizationMap[userId] = role;
+        const data = await this.store.saveQuestions(questions, surveyName, userName);
         return {
-            code   : 0,
-            message: '设置成功',
-            data   : '用户角色已更新！'
+            ...data
         };
     }
 
     /**
-     * 查询用户角色
-     * @param userId 用户id
-     * @returns 返回角色信息
+     * 提交问卷调查答案
      */
-    async getRole(userId: string): Promise<Response<string>> {
-        if (!userId) {
-            return {
-                code   : 400,
-                message: '缺少参数',
-                data   : '请提供正确的用户id'
-            };
-        }
-        const role = this.authorizationMap[userId] ?? '';
-        return {
-            code   : 0,
-            message: '查询成功',
-            data   : role
-        };
-    }
+    // async submitAnswers(userId: string, surveyName: string, answers: any[]): Promise<Response> {
+    //     if (!userId || !surveyName || !answers) {
+    //         return {
+    //             code   : 400,
+    //             message: '参数错误',
+    //             data   : '请提供正确的用户id、调查问卷名称和答案'
+    //         };
+    //     }
+    //     const result = await this.authorization.check(userId, surveyName);
+    //     if (result.code !== 0) {
+    //         return result;
+    //     }
+    //     await this.store.saveAnswers(userId, surveyName, answers);
+    //     return {
+    //         code   : 0,
+    //         message: '提交成功',
+    //         data   : '答案已提交！'
+    //     };
+    // }
 }
 
 export const survey = new Survey();
-export const authorization = new Authorization();
 export { Response };

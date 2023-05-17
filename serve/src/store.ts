@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
  */
 class Store {
     filePath: string;
-
     /**
      * 构造函数
      * @param filePath 文件路径
@@ -95,34 +94,6 @@ class Store {
     }
 
     /**
-     * 保存问题列表到文件中
-     * @param questions 问题列表
-     * @param surveyName
-     * @returns 返回保存成功信息
-     * @example await store.saveQuestions(['你喜欢吃苹果吗？', '你喜欢吃香蕉吗？'], 'fruit');
-     */
-    public async saveQuestions(questions: string[], surveyName: string): Promise<Response> {
-        // 设置创建时间与id
-        const newQuestion = {
-            id        : uuidv4(),
-            createTime: new Date().toISOString(),
-            questions
-        };
-        const filePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
-        await fs.writeFile(filePath, JSON.stringify(newQuestion, null, 4));
-        console.log(`已将${surveyName}的问题列表保存至 ${filePath} 文件中`); // 控制台输出提示信息
-
-        // const questionFilePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
-        // await fs.writeFile(newQuestion, JSON.stringify(questions, null, 4));
-        // console.log(`已将${surveyName}的问题列表保存至 ${newQuestion} 文件中`); // 控制台输出提示信息
-        return {
-            code   : 0,
-            message: '设置成功',
-            data   : '问题列表已更新！'
-        };
-    }
-
-    /**
      * 根据文件名查询数据
      * @param fileName 文件名
      * @returns 返回查询到的数据
@@ -157,6 +128,36 @@ class Store {
                 return { ...data, id: file };
             })
         );
+    }
+
+    /**
+     * 保存问题列表到文件中
+     * @param questions 问题列表
+     * @param surveyName 调查问卷id
+     * @param userName 用户名
+     * @returns 返回保存成功信息
+     * @example await store.saveQuestions(['你喜欢吃苹果吗？', '你喜欢吃香蕉吗？'], 'fruit');
+     */
+    public async saveQuestions(questions: string[], surveyName: string, userName: string): Promise<Response> {
+        // 设置创建时间与id
+        const newQuestion = {
+            id        : uuidv4(),
+            createTime: new Date().toISOString(),
+            questions
+        };
+        // 根据用户名创建文件夹，文件夹里存放该用户创建的调查问卷
+        const userDir = path.resolve(__dirname, `data/${userName}`);
+        await fs.mkdir(userDir, { recursive: true });
+        // 将问题列表写入文件
+        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}_question.json`);
+        await fs.writeFile(filePath, JSON.stringify(newQuestion, null, 4));
+        console.log(`已将提问者 ${userName} 的问题列表${surveyName}_question.json保存至 ${filePath} 文件中`);
+
+        return {
+            code   : 0,
+            message: '设置成功，问题列表已更新',
+            data   : newQuestion
+        };
     }
 }
 
