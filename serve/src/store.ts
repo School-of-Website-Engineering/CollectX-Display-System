@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { Response } from './types';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Store 类
@@ -101,9 +102,19 @@ class Store {
      * @example await store.saveQuestions(['你喜欢吃苹果吗？', '你喜欢吃香蕉吗？'], 'fruit');
      */
     public async saveQuestions(questions: string[], surveyName: string): Promise<Response> {
-        const questionFilePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
-        await fs.writeFile(questionFilePath, JSON.stringify(questions, null, 4));
-        console.log(`已将${surveyName}的问题列表保存至 ${questionFilePath} 文件中`); // 控制台输出提示信息
+        // 设置创建时间与id
+        const newQuestion = {
+            id        : uuidv4(),
+            createTime: new Date().toISOString(),
+            questions
+        };
+        const filePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
+        await fs.writeFile(filePath, JSON.stringify(newQuestion, null, 4));
+        console.log(`已将${surveyName}的问题列表保存至 ${filePath} 文件中`); // 控制台输出提示信息
+
+        // const questionFilePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
+        // await fs.writeFile(newQuestion, JSON.stringify(questions, null, 4));
+        // console.log(`已将${surveyName}的问题列表保存至 ${newQuestion} 文件中`); // 控制台输出提示信息
         return {
             code   : 0,
             message: '设置成功',
