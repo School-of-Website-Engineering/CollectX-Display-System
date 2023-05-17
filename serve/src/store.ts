@@ -96,10 +96,11 @@ class Store {
     /**
      * 根据文件名查询数据
      * @param fileName 文件名
+     * @param userName 用户名
      * @returns 返回查询到的数据
      */
-    public async findByFileName(fileName: string): Promise<any | undefined> {
-        const filePath = path.resolve(__dirname, `data/${fileName}.json`);
+    public async findByFileName(userName: string, fileName: string): Promise<any> {
+        const filePath = path.resolve(__dirname, `data/${userName}/${fileName}_question.json`);
         try {
             const data = await fs.readFile(filePath);
             return JSON.parse(data.toString());
@@ -116,18 +117,26 @@ class Store {
     /**
      * 查询指定调查问卷的所有数据
      * @param surveyName 调查问卷id
+     * @param userName 用户名
      * @returns 返回查询到的数据列表
      */
-    public async querySurveyData(surveyName: string): Promise<any[]> {
-        const files = await this.listFiles();
-        const regex = new RegExp(`^${surveyName}_data_`);
-        const dataFiles = files.filter((file) => regex.test(file));
-        return Promise.all(
-            dataFiles.map(async(file) => {
-                const data = await this.findByFileName(file);
-                return { ...data, id: file };
-            })
-        );
+    public async querySurveyData(surveyName: string, userName: string): Promise<any[]> {
+        // 根据用户名查询该用户创建的调查问卷
+        const userDir = path.resolve(__dirname, `data/${userName}`);
+        // 根据调查问卷名称查询该调查问卷的所有数据，由于系统创建的名称为‘水果调查问卷_question.json’，所以需要添加后缀
+        const filePath = path.resolve(__dirname, `data/${surveyName}_question.json`);
+        // 调用findByFileName方法查询数据
+        return await this.findByFileName(userName, filePath);
+
+        // const files = await this.listFiles();
+        // const regex = new RegExp(`^${surveyName}_data_`);
+        // const dataFiles = files.filter((file) => regex.test(file));
+        // return Promise.all(
+        //     dataFiles.map(async(file) => {
+        //         const data = await this.findByFileName(file);
+        //         return { ...data, id: file };
+        //     })
+        // );
     }
 
     /**

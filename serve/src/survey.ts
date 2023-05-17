@@ -112,18 +112,19 @@ class Survey {
     /**
      * 查询调查问卷数据列表
      * @param surveyName 调查问卷名称
+     * @param userName 用户名
      * @returns 返回数据列表
      */
-    async querySurveyData(surveyName: string): Promise<Response<any[]>> {
-        const data = await this.store.querySurveyData(surveyName);
-        console.log(`查询${surveyName}调查问卷数据，共${data.length}条`);
-        if (data.length === 0) {
+    async querySurveyData(surveyName: string, userName: string): Promise<Response<any[]>> {
+        const data = await this.store.querySurveyData(surveyName, userName);
+        if (!data || !data.length) {
             return {
                 code   : 404,
-                message: '数据不存在',
+                message: '数据不存在,请检查调查问卷名称',
                 data   : []
             };
         }
+        console.log(`查询${surveyName}调查问卷数据，共${data.length}条`);
         return {
             code   : 0,
             message: '查询成功',

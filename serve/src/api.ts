@@ -61,17 +61,18 @@ app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) =
 });
 
 /**
- * @api {get} /survey/data 获取问卷调查数据
+ * @api {get} /survey/data 获取单个问卷调查数据
  * @apiName QuerySurveyData
  * @apiGroup Survey 问卷调查
  * @apiVersion 0.3.0
  * @example {
- *   "surveyName": "2020年度问卷调查"
+ *   "surveyName": "2020年度问卷调查",
+ *   "userName": "张三"
  *}
  */
 app.get('/survey/data', async(req: Request, res: Response<Res<any[]>>) => {
-    const { surveyName } = req.body;
-    const result = await survey.querySurveyData(surveyName);
+    const { surveyName, userName } = req.query;
+    const result = await survey.querySurveyData(surveyName as string, userName as string);
     res.json(result);
 });
 
