@@ -140,6 +140,7 @@ class Store {
         const newQuestion = {
             id        : uuidv4(),
             createTime: new Date().toISOString(),
+            surveyName,
             questions
         };
         // 根据用户名创建文件夹，文件夹里存放该用户创建的调查问卷
