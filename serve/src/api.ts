@@ -81,18 +81,6 @@ app.get('/survey/questions', async(req: Request, res: Response<Res<string[]>>) =
 });
 
 /**
- * @api {put} /survey/questions 更新调查问卷问题列表
- * @apiName UpdateQuestions
- * @apiGroup Survey 问卷调查
- * @apiVersion 0.2.0
- */
-app.put('/survey/questions', async(req: Request, res: Response<Res<string>>) => {
-    const { questions, surveyName } = req.body;
-    const result = await survey.updateQuestions(questions, surveyName);
-    res.json(result);
-});
-
-/**
  * @api {post} /survey/authorization 设置用户角色
  * @apiName SetAuthorization
  * @apiGroup Survey 问卷调查

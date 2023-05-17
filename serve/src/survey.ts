@@ -136,16 +136,6 @@ class Survey {
     }
 
     /**
-     * 更新调查问卷问题列表
-     * @param questions 问题列表
-     * @param surveyName
-     * @returns 返回更新成功信息
-     */
-    async updateQuestions(questions: string[], surveyName: string): Promise<Response> {
-        return await this.store.saveQuestions(questions, surveyName);
-    }
-
-    /**
      * 查询调查问卷数据列表
      * @param surveyName 调查问卷名称
      * @returns 返回数据列表
