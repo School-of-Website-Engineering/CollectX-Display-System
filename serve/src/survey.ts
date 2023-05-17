@@ -42,7 +42,11 @@ class Survey {
      * @returns 保存成功的问卷调查数据
      */
     async save(data: Omit<SurveyData, 'id' | 'createdAt'>): Promise<Response<SurveyData>> {
-        const newData: SurveyData = { ...data, id: uuidv4(), createdAt: Date.now() }; // 生成新数据并保存
+        const newData: SurveyData = {
+            ...data,
+            id       : uuidv4(),
+            createdAt: Date.now()
+        }; // 生成新数据并保存
         await this.store.save(newData);
         console.log(`已将问卷调查数据 ${JSON.stringify(newData)} 保存至文件`); // 控制台输出提示信息
         return {

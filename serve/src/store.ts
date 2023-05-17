@@ -8,6 +8,7 @@ import { Response } from './types';
  */
 class Store {
     filePath: string;
+
     /**
      * 构造函数
      * @param filePath 文件路径
@@ -24,6 +25,7 @@ class Store {
         const dataPath = path.resolve(__dirname, 'data');
         return await fs.readdir(dataPath);
     }
+
     /**
      * 保存数据到文件中
      * @param data 要保存的数据
