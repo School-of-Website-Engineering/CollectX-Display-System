@@ -164,26 +164,24 @@ class Survey {
 
     /**
      * 提交问卷调查答案
+     * userName, surveyName, form
+     * @param questionsForm 问卷调查答案
+     * @param surveyName 调查问卷名称
+     * @param userName 用户名
      */
-    // async submitAnswers(userId: string, surveyName: string, answers: any[]): Promise<Response> {
-    //     if (!userId || !surveyName || !answers) {
-    //         return {
-    //             code   : 400,
-    //             message: '参数错误',
-    //             data   : '请提供正确的用户id、调查问卷名称和答案'
-    //         };
-    //     }
-    //     const result = await this.authorization.check(userId, surveyName);
-    //     if (result.code !== 0) {
-    //         return result;
-    //     }
-    //     await this.store.saveAnswers(userId, surveyName, answers);
-    //     return {
-    //         code   : 0,
-    //         message: '提交成功',
-    //         data   : '答案已提交！'
-    //     };
-    // }
+    async submitAnswers(surveyName: string, userName: string, questionsForm: string): Promise<Response> {
+        if (!questionsForm || !Array.isArray(questionsForm)) {
+            return {
+                code   : 400,
+                message: '参数错误',
+                data   : null
+            };
+        }
+        const data = await this.store.saveAnswers(questionsForm, surveyName, userName);
+        return {
+            ...data
+        };
+    }
 }
 
 export const survey = new Survey();

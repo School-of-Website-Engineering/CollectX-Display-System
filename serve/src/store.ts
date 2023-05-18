@@ -65,7 +65,7 @@ class Store {
         try {
             const data = await fs.readFile(this.filePath);
             return JSON.parse(data.toString());
-        } catch (e) {
+        } catch (e: any) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回空数组
                 console.log(`文件 ${this.filePath} 不存在`);
@@ -98,7 +98,7 @@ class Store {
             return data.map((item) => {
                 return item.split('_')[0];
             });
-        } catch (e) {
+        } catch (e: any) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回空数组
                 console.log(`该用户 ${userName} 未创建问题列表`);
@@ -118,7 +118,7 @@ class Store {
             const data = await fs.readFile(fileName);
             console.log(`从 ${fileName} 文件中读取到数据`);
             return JSON.parse(data.toString());
-        } catch (e) {
+        } catch (e: any) {
             if (e.code === 'ENOENT') {
                 // 如果文件不存在，则返回undefined
                 console.log(`文件 ${fileName} 不存在`);
@@ -136,7 +136,7 @@ class Store {
      */
     public async querySurveyData(surveyName: string, userName: string): Promise<any[]> {
         // 根据调查问卷名称查询该调查问卷的所有数据，由于系统创建的名称为‘水果调查问卷_question.json’，所以需要添加后缀
-        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}_question.json`);
+        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}/${surveyName}_question.json`);
         // 调用findByFileName方法查询数据
         return await this.findByFileName(filePath);
     }
@@ -157,11 +157,13 @@ class Store {
             surveyName,
             questions
         };
-        // 根据用户名创建文件夹，文件夹里存放该用户创建的调查问卷
+        // 根据用户名创建文件夹，文件夹里再创建问题名的文件夹，将问题列表写入文件
         const userDir = path.resolve(__dirname, `data/${userName}`);
+        const questionDir = path.resolve(__dirname, `data/${userName}/${surveyName}`);
         await fs.mkdir(userDir, { recursive: true });
+        await fs.mkdir(questionDir, { recursive: true });
         // 将问题列表写入文件
-        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}_question.json`);
+        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}/${surveyName}_question.json`);
         await fs.writeFile(filePath, JSON.stringify(newQuestion, null, 4));
         console.log(`已将提问者 ${userName} 的问题列表${surveyName}_question.json保存至 ${filePath} 文件中`);
 
@@ -169,6 +171,35 @@ class Store {
             code   : 0,
             message: '设置成功，问题列表已更新',
             data   : newQuestion
+        };
+    }
+
+    /**
+     * 保存答案到文件中
+     * @param questionsForm 表单数据
+     * @param surveyName 调查问卷id
+     * @param userName 用户名
+     */
+    async saveAnswers(surveyName: string, userName: string, questionsForm: any): Promise<Response> {
+        // 设置创建时间与id
+        const newAnswer = {
+            id        : uuidv4(),
+            createTime: new Date().toISOString(),
+            surveyName,
+            questionsForm
+        };
+        // 根据用户名创建文件夹，文件夹里存放该用户创建的调查问卷
+        const userDir = path.resolve(__dirname, `data/${userName}`);
+        await fs.mkdir(userDir, { recursive: true });
+        // 将问题列表写入文件
+        const filePath = path.resolve(__dirname, `data/${userName}/${surveyName}_answer.json`);
+        await fs.writeFile(filePath, JSON.stringify(newAnswer, null, 4));
+        console.log(`已将回答者 ${userName} 的答案列表${surveyName}_answer.json保存至 ${filePath} 文件中`);
+
+        return {
+            code   : 0,
+            message: '设置成功，答案列表已更新',
+            data   : newAnswer
         };
     }
 }
